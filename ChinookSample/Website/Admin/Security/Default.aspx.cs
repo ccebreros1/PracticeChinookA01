@@ -14,4 +14,10 @@ public partial class Admin_Security_Default : System.Web.UI.Page
     {
 
     }
+
+ 
+    protected void RefreshAll(object sender, EventArgs e)
+    {
+        DataBind();
+    }
 }
