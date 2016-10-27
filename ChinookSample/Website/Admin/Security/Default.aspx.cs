@@ -56,7 +56,7 @@ public partial class Admin_Security_Default : System.Web.UI.Page
             //columns are index (starting at 0)
             UnRegisteredUserProfile user = new UnRegisteredUserProfile()
             {
-                UserId = int.Parse(UnregisteredUsersGridView.SelectedDataKey.Value.ToString()),
+                CustomerEmployeeId = int.Parse(UnregisteredUsersGridView.SelectedDataKey.Value.ToString()),
                 UserType = (UnRegisteredUserType)Enum.Parse(typeof(UnRegisteredUserType), agvrow.Cells[1].Text),
                 FirstName = agvrow.Cells[2].Text,
                 LastName = agvrow.Cells[3].Text,

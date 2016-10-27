@@ -64,7 +64,7 @@ namespace ChinookSystem.Security
                                             where !registeredEmployees.Any(eid => emp.EmployeeId == eid)
                                             select new UnRegisteredUserProfile()
                                             {
-                                                UserId = emp.EmployeeId,
+                                                CustomerEmployeeId = emp.EmployeeId,
                                                 FirstName = emp.FirstName,
                                                 LastName = emp.LastName,
                                                 UserType = UnRegisteredUserType.Employee
@@ -79,7 +79,7 @@ namespace ChinookSystem.Security
                                             where !registeredCustomers.Any(cid => cus.CustomerId == cid)
                                             select new UnRegisteredUserProfile()
                                             {
-                                                UserId = cus.CustomerId,
+                                                CustomerEmployeeId = cus.CustomerId,
                                                 FirstName = cus.FirstName,
                                                 LastName = cus.LastName,
                                                 UserType = UnRegisteredUserType.Customer
@@ -107,13 +107,13 @@ namespace ChinookSystem.Security
             {
                 case UnRegisteredUserType.Customer:
                     {
-                        newuseraccount.Id = userinfo.UserId.ToString();
+                        newuseraccount.CustomerId = userinfo.CustomerEmployeeId;
                      
                         break;
                     }
                 case UnRegisteredUserType.Employee:
                     {
-                        newuseraccount.Id = userinfo.UserId.ToString();
+                        newuseraccount.EmployeeId = userinfo.CustomerEmployeeId;
                         break;
                     }
             }
