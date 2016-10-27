@@ -60,8 +60,8 @@ public partial class Admin_Security_Default : System.Web.UI.Page
                 UserType = (UnRegisteredUserType)Enum.Parse(typeof(UnRegisteredUserType), agvrow.Cells[1].Text),
                 FirstName = agvrow.Cells[2].Text,
                 LastName = agvrow.Cells[3].Text,
-                UserName = assignedusername,
-                Email = assignedemail
+                AssignedUserName = assignedusername,
+                AssignedEmail = assignedemail
             };
 
             //register the user via the Chinook.UserManger controller

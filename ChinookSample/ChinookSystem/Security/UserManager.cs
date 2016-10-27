@@ -98,8 +98,8 @@ namespace ChinookSystem.Security
             //the instance of the required user is based on our ApplicationUser
             var newuseraccount = new ApplicationUser()
             {
-                UserName = userinfo.UserName,
-                Email = userinfo.Email
+                UserName = userinfo.AssignedUserName,
+                Email = userinfo.AssignedEmail
             };
 
             //set the CustomerId or EmployeeId

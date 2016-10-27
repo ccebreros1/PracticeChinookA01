@@ -10,8 +10,8 @@ namespace ChinookSystem.Security
     public class UnRegisteredUserProfile
     {
         public int UserId { get; set; } //generated
-        public string UserName { get; set; } //collected
-        public string Email { get; set; }   //collected
+        public string AssignedUserName { get; set; } //collected
+        public string AssignedEmail { get; set; }   //collected
         public string FirstName { get; set; } //comes from user table
         public string LastName { get; set; } //comes from user table
         public UnRegisteredUserType UserType { get; set; }
