@@ -1,9 +1,15 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="TrackCRUD.aspx.cs" Inherits="Admin_EntityMaintenance_TrackCRUD" %>
 
+<%@ Register Src="~/UserControls/MessageUserControl.ascx" TagPrefix="my" 
+    TagName="MessageUserControl" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <div class="jumbotron">
         <h3>Wired ListView CRUD</h3>
     </div>
+    <my:MessageUserControl runat="server" ID="MessageUserControl" />
+
     <asp:ListView ID="TrackList" runat="server" 
         DataSourceID="TrackListODS" 
         InsertItemPosition="LastItem"
@@ -283,7 +289,10 @@
         SelectMethod="ListTracks"
         UpdateMethod="UpdateTrack"
         OldValuesParameterFormatString="original_{0}" 
-        TypeName="ChinookSystem.BLL.TrackController">
+        TypeName="ChinookSystem.BLL.TrackController" 
+        OnDeleted="CheckForException" 
+        OnInserted="CheckForException" 
+        OnUpdated="CheckForException">
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="AlbumListODS" runat="server" 
         OldValuesParameterFormatString="original_{0}" 
