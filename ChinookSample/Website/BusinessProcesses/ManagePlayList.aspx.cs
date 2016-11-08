@@ -21,12 +21,6 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         }
     }
 
-    protected void AddToPlayList_Click(object sender, EventArgs e)
-    {
-       
-      
-    }
-
     protected void ArtistFetch_Click(object sender, EventArgs e)
     {
         MessageUserControl.TryRun((ProcessRequest)FetchTracksForArtist);
@@ -63,9 +57,29 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
 
     protected void TrackSearchList_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-        //MessageUserControl.ShowInfo("row selected with id of " + e.CommandArgument);
         ListViewDataItem rowcontents = e.Item as ListViewDataItem;
-        MessageUserControl.ShowInfo("row selected with id of " + e.CommandArgument + " title is " + (rowcontents.FindControl("Label2") as Label).Text.ToString());
+       // MessageUserControl.ShowInfo("row selected with id of " + e.CommandArgument + " title is " + (rowcontents.FindControl("NameLabel") as Label).Text.ToString());
+        string playlistname = PlayListName.Text;
+        if (string.IsNullOrEmpty(PlayListName.Text))
+        {
+            MessageUserControl.ShowInfo("Please enter a playlist name.");
+        }
+        else
+        {
+            MessageUserControl.TryRun(() =>
+            {
+
+
+
+
+                PlaylistTrackController sysmgr = new PlaylistTrackController();
+                sysmgr.AddTrackToPlayList(playlistname, int.Parse(e.CommandArgument.ToString()), 1);
+
+                List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(playlistname, 1);
+                CurrentPlayList.DataSource = results;
+                CurrentPlayList.DataBind();
+            });
+        }
     }
 
     protected void PlayListFetch_Click(object sender, EventArgs e)
@@ -78,7 +92,7 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
             }
             else
             {
-                PlaylistController sysmgr = new PlaylistController();
+                PlaylistTrackController sysmgr = new PlaylistTrackController();
                 List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(PlayListName.Text, 1);
                 CurrentPlayList.DataSource = results;
                 CurrentPlayList.DataBind();

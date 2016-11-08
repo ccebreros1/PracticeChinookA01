@@ -16,27 +16,8 @@ namespace ChinookSystem.BLL
     [DataObject]
     public class PlaylistController
     {
-        [DataObjectMethod(DataObjectMethodType.Select,false)]
-        public List<TracksForPlaylist> Get_PlaylistTracks(string playlistname, int customerid)
-        {
-            using (var context = new ChinookContext())
-            {
-                var results = from x in context.PlaylistTracks
-                              where x.PlayList.Name.Equals(playlistname)
-                              && x.PlayList.CustomerId==customerid
-                              select new TracksForPlaylist
-                              {
-                                  TrackId = x.TrackId,
-                                  TrackNumber = 1,
-                                  Name = x.Track.Name,
-                                  Title = x.Track.Album.Title,
-                                  Milliseconds = x.Track.Milliseconds,
-                                  UnitPrice = x.Track.UnitPrice,
-                                  Purchased = true
-                              };
-                return results.ToList();
+      
 
-            }
-        }
+
     }
 }

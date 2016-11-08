@@ -92,7 +92,7 @@
                 <tr style="background-color: #FFF8DC;">
                     <td>
                        <asp:LinkButton ID="AddToPlayList" runat="server"  CommandArgument='<%# Eval("TrackId") %>' 
-                            CssClass="btn" OnClick="AddToPlayList_Click"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></asp:LinkButton>
+                            CssClass="btn"><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></asp:LinkButton>
                     </td>
              
                     <td>
@@ -125,7 +125,7 @@
             <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False">
                 <Columns>
                     <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
-                    <asp:BoundField DataField="Title" HeaderText="Title"></asp:BoundField>
+                    <asp:BoundField DataField="Title" HeaderText="Album"></asp:BoundField>
                     <asp:BoundField DataField="Milliseconds" HeaderText="MSec"></asp:BoundField>
                     <asp:BoundField DataField="UnitPrice" HeaderText="$"></asp:BoundField>
                     <asp:CheckBoxField DataField="Purchased" Text="Paid"></asp:CheckBoxField>

@@ -91,7 +91,7 @@
                             </asp:MenuItem>
 
                              <%-- a drop down menu has nested menuitems Business Processes--%>
-                            <asp:MenuItem Text="Queries" Value="query">
+                            <asp:MenuItem Text="Bus/Process" Value="busprocess">
                                 <asp:MenuItem Text="Manage Playlists" NavigateUrl="~/BusinessProcesses/ManagePlayList" />
                              
                             </asp:MenuItem>
@@ -103,6 +103,7 @@
                             <asp:MenuItem Text="Contact" NavigateUrl="~/Contact" />
                         </Items>
                     </asp:Menu>
+                        </ul>
                 </div>
             </div>
         </div>
