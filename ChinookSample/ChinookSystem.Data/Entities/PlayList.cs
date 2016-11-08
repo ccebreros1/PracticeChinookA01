@@ -16,6 +16,7 @@ namespace ChinookSystem.Data.Entities
     {
         public int PlaylistId { get; set; }
         public string Name { get; set; }
+        public int? CustomerId { get; set; }
 
         //Tracks may be on one or more PlayList. Each PlayList has one or more Tracks
         //this many to many relationship was normalized using a table called PlaylistTracks
@@ -26,5 +27,6 @@ namespace ChinookSystem.Data.Entities
 
         //Modeling of this relationship will be done in the context class
         public virtual ICollection<Track> Tracks { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

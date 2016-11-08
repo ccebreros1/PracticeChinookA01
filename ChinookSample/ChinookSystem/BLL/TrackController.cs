@@ -13,6 +13,7 @@ using ChinookSystem.DAL;
 
 namespace ChinookSystem.BLL
 {
+    #region List All and Find by Key
     [DataObject]
     public class TrackController
     {
@@ -35,7 +36,8 @@ namespace ChinookSystem.BLL
                 return context.Tracks.Find(trackid);
             }
         }
-
+        #endregion
+        #region Add, Update and Delete
         [DataObjectMethod(DataObjectMethodType.Insert, true)]
         public void AddTrack(Track trackinfo)
         {
@@ -106,5 +108,37 @@ namespace ChinookSystem.BLL
                 context.SaveChanges();
             }
         }
+        #endregion
+        #region Business Processes
+        public List<TracksForPlaylistSelection> Get_TracksForPlaylistSelection(int id, string fetchby)
+        {
+            List<TracksForPlaylistSelection> results = null;
+            using (var context = new ChinookContext())
+            {
+                switch (fetchby)
+                {
+                    case "Artist":
+                        {
+                            results = (from x in context.Tracks
+                                       where x.Album.ArtistId == id
+                                       select new TracksForPlaylistSelection
+                                       {
+                                           TrackId = x.TrackId,
+                                           Name = x.Name,
+                                           Title = x.Album.Title,
+                                           MediaName = x.MediaType.Name,
+                                           GenreName = x.Genre.Name,
+                                           Composer = x.Composer,
+                                           Milliseconds = x.Milliseconds,
+                                           Bytes = x.Bytes,
+                                           UnitPrice = x.UnitPrice
+                                       }).ToList();
+                            break;
+                        }
+                }
+            }
+            return results;
+        }
+        #endregion
     }
 }

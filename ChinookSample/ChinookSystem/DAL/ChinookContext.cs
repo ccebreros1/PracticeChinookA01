@@ -37,8 +37,9 @@ namespace ChinookSystem.DAL
         public DbSet<Genre> Genres { get; set; }
 
         public DbSet<PlayList> PlayLists { get; set; }
+        public DbSet<PlaylistTrack> PlaylistTracks { get; set; }
 
-       
+
 
         //Modelling of our many-to-many relation between Tracks and PlayLists
         //No entity was coded for the physical database table PlaylistTracks
@@ -52,19 +53,19 @@ namespace ChinookSystem.DAL
         //It is important to call the base method's implementation before you
         //exit the method
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder
-                .Entity<PlayList>().HasMany(r => r.Tracks)
-                .WithMany(t => t.PlayLists)
-                .Map(mapping =>
-                {
-                    mapping.ToTable("PlaylistTracks"); //entity not coded
-                    mapping.MapLeftKey("PlayListId");  //HasMany key
-                    mapping.MapRightKey("TrackId");    //WithMany Key
-                });
-            //call the base method
-            base.OnModelCreating(modelBuilder);
-        }
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder
+        //        .Entity<PlayList>().HasMany(r => r.Tracks)
+        //        .WithMany(t => t.PlayLists)
+        //        .Map(mapping =>
+        //        {
+        //            mapping.ToTable("PlaylistTracks"); //entity not coded
+        //            mapping.MapLeftKey("PlayListId");  //HasMany key
+        //            mapping.MapRightKey("TrackId");    //WithMany Key
+        //        });
+        //    //call the base method
+        //    base.OnModelCreating(modelBuilder);
+        //}
     }
 }
