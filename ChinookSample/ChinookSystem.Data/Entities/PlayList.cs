@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 #region Additional Namespaces
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-#endregion 
-
+#endregion
 
 namespace ChinookSystem.Data.Entities
 {
+    [Table("Playlists")]
     public class PlayList
     {
         public int PlaylistId { get; set; }
         public string Name { get; set; }
-        public int? CustomerId { get; set; }
+        public int CustomerId { get; set; }
 
         //Tracks may be on one or more PlayList. Each PlayList has one or more Tracks
         //this many to many relationship was normalized using a table called PlaylistTracks

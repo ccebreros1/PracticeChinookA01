@@ -42,11 +42,11 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
     }
 
 
-    protected void TrackSearchList_SelectedIndexChanging(object sender, ListViewSelectEventArgs e)
-    {
+    //protected void TrackSearchList_SelectedIndexChanging(object sender, ListViewSelectEventArgs e)
+    //{
         
-        TrackSearchList.SelectedIndex = e.NewSelectedIndex;
-    }
+    //    TrackSearchList.SelectedIndex = e.NewSelectedIndex;
+    //}
 
     protected void TrackSearchList_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
     {
@@ -70,6 +70,19 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
 
     protected void PlayListFetch_Click(object sender, EventArgs e)
     {
-
+        MessageUserControl.TryRun(() =>
+        {
+            if (string.IsNullOrEmpty(PlayListName.Text))
+            {
+                throw new Exception("Enter a playlist name.");
+            }
+            else
+            {
+                PlaylistController sysmgr = new PlaylistController();
+                List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(PlayListName.Text, 1);
+                CurrentPlayList.DataSource = results;
+                CurrentPlayList.DataBind();
+            }
+        });
     }
 }

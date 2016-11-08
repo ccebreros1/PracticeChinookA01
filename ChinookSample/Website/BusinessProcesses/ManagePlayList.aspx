@@ -122,7 +122,7 @@
              <asp:TextBox ID="PlayListName" runat="server"></asp:TextBox><br />
             <asp:Button ID="PlayListFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="PlayListFetch_Click" />&nbsp;&nbsp;
            <asp:Button ID="PlayListSave" runat="server" Text="Save" CssClass="btn btn-primary" /><br />
-            <asp:GridView ID="PlayList" runat="server" AutoGenerateColumns="False">
+            <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False">
                 <Columns>
                     <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
                     <asp:BoundField DataField="Title" HeaderText="Title"></asp:BoundField>
@@ -132,6 +132,9 @@
                     <asp:BoundField DataField="TrackId" Visible="False"></asp:BoundField>
                     <asp:BoundField DataField="TrackNumber"></asp:BoundField>
                 </Columns>
+                <EmptyDataTemplate>
+                    No current tracks on play list.
+                </EmptyDataTemplate>
             </asp:GridView>
        </div>
     </div>

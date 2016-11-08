@@ -17,13 +17,13 @@ namespace ChinookSystem.BLL
     public class PlaylistController
     {
         [DataObjectMethod(DataObjectMethodType.Select,false)]
-        public List<TracksForPlaylist> Get_PlaylistTracks(string playlistname, string customerid)
+        public List<TracksForPlaylist> Get_PlaylistTracks(string playlistname, int customerid)
         {
             using (var context = new ChinookContext())
             {
                 var results = from x in context.PlaylistTracks
                               where x.PlayList.Name.Equals(playlistname)
-                              //&& x.PlayList.CustomerID.Equals(customerid)
+                              && x.PlayList.CustomerId==customerid
                               select new TracksForPlaylist
                               {
                                   TrackId = x.TrackId,
