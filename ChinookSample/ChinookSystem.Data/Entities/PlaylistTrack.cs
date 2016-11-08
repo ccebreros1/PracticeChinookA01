@@ -16,9 +16,10 @@ namespace ChinookSystem.Data.Entities
     {
         [Key, Column(Order = 1)]
         public int PlaylistId { get; set; }
+        [Key, Column(Order = 2)]
         public int TrackId { get; set; }
         public int TrackNumber { get; set; }
         public virtual Track Track { get; set; }
-        public virtual PlayList PlayList { get; set; }
+        public virtual Playlist PlayList { get; set; }
     }
 }
