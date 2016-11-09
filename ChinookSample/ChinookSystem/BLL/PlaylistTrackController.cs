@@ -9,6 +9,7 @@ using System.ComponentModel; //ODS
 using ChinookSystem.Data.Entities;
 using ChinookSystem.Data.POCOs;
 using ChinookSystem.DAL;
+using System.Transactions;
 #endregion
 
 namespace ChinookSystem.BLL
@@ -42,43 +43,54 @@ namespace ChinookSystem.BLL
 
         public void AddTrackToPlayList(string playlistname, int trackid, int? customerid)
         {
-            using (var context = new ChinookContext())
-            {
-                int tracknumber = 0;
-                Playlist existing = (from x in context.PlayLists
-                                     where x.Name.Equals(playlistname)
-                                     && x.CustomerId == customerid
-                                     select x).FirstOrDefault();
-                PlaylistTrack newtrack = null;
-                if (existing == null)
+            using (TransactionScope scope = new TransactionScope())
+            { 
+                using (var context = new ChinookContext())
                 {
-                    existing = new Playlist();
-                    existing.Name = playlistname;
-                    existing.CustomerId = customerid;
-                    existing = context.PlayLists.Add(existing);
-                    existing.PlaylistId = context.PlayLists.Count() + 1;
-                    tracknumber = 1;
-                }
-                else
-                {
-                    tracknumber = existing.PlaylistTracks.Count() + 1;
-                    newtrack = existing.PlaylistTracks.SingleOrDefault(x => x.TrackId == trackid);
-                }
-                
-               // PlaylistTrack 
-                if (newtrack != null)
-                {
-                    throw new Exception("Playlist already has requested track.");
-                }
-                newtrack = new PlaylistTrack();
-                newtrack.PlaylistId = existing.PlaylistId;
-                newtrack.TrackId = trackid;
-                newtrack.TrackNumber = tracknumber;
-                context.PlaylistTracks.Add(newtrack);
-                //existing.PlaylistTracks.Add(newtrack);
-                context.SaveChanges();
+                    int tracknumber = 0;
+                    Playlist existing = (from x in context.PlayLists
+                                    where x.Name.Equals(playlistname)
+                                    && x.CustomerId == customerid
+                                    select x).FirstOrDefault();
+                    PlaylistTrack newtrack = null;
 
-            }
+                    if (existing == null)
+                    {
+                        existing = new Playlist();
+                        existing.Name = playlistname;
+                        existing.CustomerId = customerid;
+                        existing = context.PlayLists.Add(existing);
+                        context.SaveChanges();
+                        //existing.PlaylistId = context.PlayLists.Count() + 1;
+                        tracknumber = 1;
+                    }
+                    else
+                    {
+
+                        tracknumber = existing.PlaylistTracks.Count() + 1;
+                        newtrack = existing.PlaylistTracks.SingleOrDefault(x => x.TrackId == trackid);
+                    }
+
+                    // PlaylistTrack 
+                    if (newtrack != null)
+                    {
+                        throw new Exception("Playlist already has requested track.");
+                    }
+                    //for testing
+                    if (playlistname.Equals("Boom"))
+                    {
+                        throw new Exception("Playlist test rollback.");
+                    }
+                    newtrack = new PlaylistTrack();
+                    newtrack.PlaylistId = existing.PlaylistId;
+                    newtrack.TrackId = trackid;
+                    newtrack.TrackNumber = tracknumber;
+                    context.PlaylistTracks.Add(newtrack);
+                    //existing.PlaylistTracks.Add(newtrack);
+                    context.SaveChanges();
+                } //eouc
+                scope.Complete();
+            }//eout
         }
     }
 }
