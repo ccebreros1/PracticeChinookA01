@@ -43,8 +43,31 @@ namespace ChinookSystem.BLL
 
         public void AddTrackToPlayList(string playlistname, int trackid, int? customerid)
         {
-            using (TransactionScope scope = new TransactionScope())
-            { 
+            /*
+            two approaches:
+            one:
+             wrap using context inside a TransactionScope. this alows for multiple
+             SaveChanges() within code. Note: SaveChanges() internally has its own
+             TransactionScope. One can nest TransactionsScopes.
+             requires reference setting System.TransactionScope and using System.TransactionScope
+
+            commented code is this approach
+
+            two:
+            Add a HashSet<T> to any entity that has ICollection<T> see Playlist entity
+            This HashSet<T> works with EntityFramework to internally create all entries
+            to the database and the need for generated values (identity).
+
+            All work of adding or updating is done at one time (SaveChanges()). Logically
+            you "assume" that the identity value is known when you do your coding.
+
+            The adding of ICollection<T> records is done using a navigatitional approach.
+
+                parent.NavigationProperty.Add(childentity)
+
+            */
+            //using (TransactionScope scope = new TransactionScope())
+            //{ 
                 using (var context = new ChinookContext())
                 {
                     int tracknumber = 0;
@@ -60,8 +83,8 @@ namespace ChinookSystem.BLL
                         existing.Name = playlistname;
                         existing.CustomerId = customerid;
                         existing = context.PlayLists.Add(existing);
-                        context.SaveChanges();
-                        //existing.PlaylistId = context.PlayLists.Count() + 1;
+                        //context.SaveChanges();
+                        
                         tracknumber = 1;
                     }
                     else
@@ -77,20 +100,20 @@ namespace ChinookSystem.BLL
                         throw new Exception("Playlist already has requested track.");
                     }
                     //for testing
-                    if (playlistname.Equals("Boom"))
-                    {
-                        throw new Exception("Playlist test rollback.");
-                    }
+                    //if (playlistname.Equals("Boom"))
+                    //{
+                    //    throw new Exception("Playlist test rollback.");
+                    //}
                     newtrack = new PlaylistTrack();
-                    newtrack.PlaylistId = existing.PlaylistId;
+                    //newtrack.PlaylistId = existing.PlaylistId;
                     newtrack.TrackId = trackid;
                     newtrack.TrackNumber = tracknumber;
-                    context.PlaylistTracks.Add(newtrack);
-                    //existing.PlaylistTracks.Add(newtrack);
+                    //context.PlaylistTracks.Add(newtrack); //approach one
+                    existing.PlaylistTracks.Add(newtrack); //approach two remove for approach one
                     context.SaveChanges();
                 } //eouc
-                scope.Complete();
-            }//eout
+            //    scope.Complete();
+            //}//eout
         }
     }
 }
