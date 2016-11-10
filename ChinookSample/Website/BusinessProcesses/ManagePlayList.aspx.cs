@@ -9,6 +9,8 @@ using System.Web.UI.WebControls;
 using ChinookSystem.BLL;
 using ChinookSystem.Data.POCOs;
 using Chinook.UI;
+using ChinookSystem.Security;
+using Microsoft.AspNet.Identity;
 #endregion
 
 public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
@@ -20,7 +22,36 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
             TrackSearchList.DataSource = null;
         }
     }
+    protected int GetUserCustomerId ()
+    {
+        int customerid = 0;
+        //is the current user logged on
+        if (Request.IsAuthenticated)
+        {
+            //get the current user name from aspnet User.Identity
+            //this name will be the name shown in the right hand corner
+            //of the form
+            string username = User.Identity.Name;
 
+            //use the security UserManager controller we coded
+            //which ties into aspnet.Identity
+            //this will be used to get an ApplicationUser instance of the 
+            //current user
+            //include a using to the controller
+            UserManager sysmgr = new UserManager();
+
+            //needs using Mircosoft.Aspnet.Identity
+            var applicationuser = sysmgr.FindByName(username);
+
+            //get the customerid from the applicationuser
+            customerid = applicationuser.CustomerId == null ? 0 : (int)applicationuser.CustomerId;
+        }
+        else
+        {
+            MessageUserControl.ShowInfo("You must log in to manage a playlist.");
+        }
+        return customerid;
+    }
     protected void ArtistFetch_Click(object sender, EventArgs e)
     {
         MessageUserControl.TryRun((ProcessRequest)FetchTracksForArtist);
@@ -34,13 +65,6 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         TrackSearchList.DataBind();
         TracksBy.Text = "Artist";
     }
-
-
-    //protected void TrackSearchList_SelectedIndexChanging(object sender, ListViewSelectEventArgs e)
-    //{
-        
-    //    TrackSearchList.SelectedIndex = e.NewSelectedIndex;
-    //}
 
     protected void TrackSearchList_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
     {
@@ -57,46 +81,100 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
 
     protected void TrackSearchList_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-        ListViewDataItem rowcontents = e.Item as ListViewDataItem;
-       // MessageUserControl.ShowInfo("row selected with id of " + e.CommandArgument + " title is " + (rowcontents.FindControl("NameLabel") as Label).Text.ToString());
-        string playlistname = PlayListName.Text;
-        if (string.IsNullOrEmpty(PlayListName.Text))
+        int customerid = GetUserCustomerId();
+        if (customerid > 0)
         {
-            MessageUserControl.ShowInfo("Please enter a playlist name.");
+            ListViewDataItem rowcontents = e.Item as ListViewDataItem;
+            // MessageUserControl.ShowInfo("row selected with id of " + e.CommandArgument + " title is " + (rowcontents.FindControl("NameLabel") as Label).Text.ToString());
+            string playlistname = PlayListName.Text;
+            if (string.IsNullOrEmpty(PlayListName.Text))
+            {
+                MessageUserControl.ShowInfo("Please enter a playlist name.");
+            }
+            else
+            {
+                MessageUserControl.TryRun(() =>
+                {
+
+
+
+
+                    PlaylistTrackController sysmgr = new PlaylistTrackController();
+                    sysmgr.AddTrackToPlayList(playlistname, int.Parse(e.CommandArgument.ToString()), customerid);
+
+                    List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(playlistname, customerid);
+                    CurrentPlayList.DataSource = results;
+                    CurrentPlayList.DataBind();
+                });
+            }
         }
         else
         {
-            MessageUserControl.TryRun(() =>
-            {
-
-
-
-
-                PlaylistTrackController sysmgr = new PlaylistTrackController();
-                sysmgr.AddTrackToPlayList(playlistname, int.Parse(e.CommandArgument.ToString()), 1);
-
-                List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(playlistname, 1);
-                CurrentPlayList.DataSource = results;
-                CurrentPlayList.DataBind();
-            });
+            MessageUserControl.ShowInfo("Please use your customer account to manage playlists.");
         }
     }
 
     protected void PlayListFetch_Click(object sender, EventArgs e)
     {
-        MessageUserControl.TryRun(() =>
+        int customerid = GetUserCustomerId();
+        if (customerid > 0)
         {
-            if (string.IsNullOrEmpty(PlayListName.Text))
+            MessageUserControl.TryRun(() =>
             {
-                throw new Exception("Enter a playlist name.");
-            }
-            else
-            {
-                PlaylistTrackController sysmgr = new PlaylistTrackController();
-                List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(PlayListName.Text, 1);
-                CurrentPlayList.DataSource = results;
-                CurrentPlayList.DataBind();
-            }
-        });
+                if (string.IsNullOrEmpty(PlayListName.Text))
+                {
+                    throw new Exception("Enter a playlist name.");
+                }
+                else
+                {
+                    PlaylistTrackController sysmgr = new PlaylistTrackController();
+                    List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(PlayListName.Text, customerid);
+                    CurrentPlayList.DataSource = results;
+                    CurrentPlayList.DataBind();
+                }
+            });
+        }
+    }
+
+    protected void MediaTypeFetch_Click(object sender, EventArgs e)
+    {
+        MessageUserControl.TryRun((ProcessRequest)FetchTracksForMedia);
+    }
+    public void FetchTracksForMedia()
+    {
+        int id = int.Parse(MediaTypeList.SelectedValue);
+        TrackController sysmgr = new TrackController();
+        List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Artist");
+        TrackSearchList.DataSource = results;
+        TrackSearchList.DataBind();
+        TracksBy.Text = "Media";
+    }
+
+    protected void GenreFetch_Click(object sender, EventArgs e)
+    {
+        MessageUserControl.TryRun((ProcessRequest)FetchTracksForGenre);
+    }
+    public void FetchTracksForGenre()
+    {
+        int id = int.Parse(GenreList.SelectedValue);
+        TrackController sysmgr = new TrackController();
+        List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Artist");
+        TrackSearchList.DataSource = results;
+        TrackSearchList.DataBind();
+        TracksBy.Text = "Genre";
+    }
+
+    protected void AlbumFetch_Click(object sender, EventArgs e)
+    {
+        MessageUserControl.TryRun((ProcessRequest)FetchTracksForAlbum);
+    }
+    public void FetchTracksForAlbum()
+    {
+        int id = int.Parse(AlbumList.SelectedValue);
+        TrackController sysmgr = new TrackController();
+        List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Artist");
+        TrackSearchList.DataSource = results;
+        TrackSearchList.DataBind();
+        TracksBy.Text = "Album";
     }
 }

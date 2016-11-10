@@ -10,11 +10,42 @@
     <uc1:MessageUserControl runat="server" ID="MessageUserControl" />
     <div class="row">
         <div class="col-sm-3">
+            
             <asp:DropDownList ID="ArtistList" runat="server"
                  DataSourceID="ArtistListODS"
                  DataTextField="Name" 
-                DataValueField="ArtistId"  Width="300px"></asp:DropDownList><br />
-            <asp:Button ID="ArtistFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="ArtistFetch_Click" />
+                DataValueField="ArtistId"  
+                Width="300px">
+            </asp:DropDownList><br />
+            <asp:Label ID="Label6" runat="server" Text="Artist"></asp:Label>&nbsp;&nbsp;
+            <asp:Button ID="ArtistFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="ArtistFetch_Click" /><br />
+            
+            <asp:DropDownList ID="MediaTypeList" runat="server"
+                Width="300px" 
+                DataSourceID="MediaTypeODS" 
+                DataTextField="DisplayText" 
+                DataValueField="PFKeyIdentifier">
+            </asp:DropDownList><br />
+            <asp:Label ID="Label9" runat="server" Text="Media"></asp:Label>&nbsp;&nbsp;
+            <asp:Button ID="MediaTypeFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="MediaTypeFetch_Click"  /><br />
+            
+            <asp:DropDownList ID="GenreList" runat="server"
+                Width="300px" 
+                DataSourceID="GenreListODS" 
+                DataTextField="DisplayText" 
+                DataValueField="PFKeyIdentifier">
+            </asp:DropDownList><br />
+            <asp:Label ID="Label7" runat="server" Text="Genre"></asp:Label>&nbsp;&nbsp;
+            <asp:Button ID="GenreFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="GenreFetch_Click" /><br />
+           
+             <asp:DropDownList ID="AlbumList" runat="server"
+                Width="300px" 
+                DataSourceID="AlbumListODS" 
+                DataTextField="DisplayText" 
+                DataValueField="PFKeyIdentifier">
+            </asp:DropDownList><br />
+            <asp:Label ID="Label8" runat="server" Text="Album"></asp:Label>&nbsp;&nbsp;
+            <asp:Button ID="AlbumFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="AlbumFetch_Click" /><br />
         </div>
         <div class="col-sm-9">
        
@@ -140,7 +171,11 @@
     </div>
     <asp:ObjectDataSource ID="ArtistListODS" runat="server" OldValuesParameterFormatString="original_{0}" 
         SelectMethod="Artist_ListAll" TypeName="ChinookSystem.BLL.ArtistController"></asp:ObjectDataSource>
-    
-
+    <asp:ObjectDataSource ID="MediaTypeODS" runat="server" OldValuesParameterFormatString="original_{0}" 
+        SelectMethod="MediaTypeList" TypeName="ChinookSystem.BLL.MediaTypeController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="GenreListODS" runat="server" OldValuesParameterFormatString="original_{0}" 
+        SelectMethod="GenreList" TypeName="ChinookSystem.BLL.GenreController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="AlbumListODS" runat="server" OldValuesParameterFormatString="original_{0}" 
+        SelectMethod="AlbumList" TypeName="ChinookSystem.BLL.AlbumController"></asp:ObjectDataSource>
 </asp:Content>
 
