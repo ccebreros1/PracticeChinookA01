@@ -22,36 +22,7 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
             TrackSearchList.DataSource = null;
         }
     }
-    protected int GetUserCustomerId ()
-    {
-        int customerid = 0;
-        //is the current user logged on
-        if (Request.IsAuthenticated)
-        {
-            //get the current user name from aspnet User.Identity
-            //this name will be the name shown in the right hand corner
-            //of the form
-            string username = User.Identity.Name;
-
-            //use the security UserManager controller we coded
-            //which ties into aspnet.Identity
-            //this will be used to get an ApplicationUser instance of the 
-            //current user
-            //include a using to the controller
-            UserManager sysmgr = new UserManager();
-
-            //needs using Mircosoft.Aspnet.Identity
-            var applicationuser = sysmgr.FindByName(username);
-
-            //get the customerid from the applicationuser
-            customerid = applicationuser.CustomerId == null ? 0 : (int)applicationuser.CustomerId;
-        }
-        else
-        {
-            MessageUserControl.ShowInfo("You must log in to manage a playlist.");
-        }
-        return customerid;
-    }
+   
 
     #region Search Fetch buttons
     protected void ArtistFetch_Click(object sender, EventArgs e)
@@ -76,6 +47,7 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         this code must be placed after the first binding of the data for the DataPager
         to exists.
 
+        http://www.aspsnippets.com/Articles/Selecting-GridView-Row-by-clicking-anywhere-on-the-Row.aspx
         */
         if (!TracksBy.Text.Equals("Artist"))
         {
@@ -182,13 +154,47 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
     }
     #endregion
 
+    #region Get a customerid via the log in
+    protected int GetUserCustomerId()
+    {
+        int customerid = 0;
+        //is the current user logged on
+        if (Request.IsAuthenticated)
+        {
+            //get the current user name from aspnet User.Identity
+            //this name will be the name shown in the right hand corner
+            //of the form
+            string username = User.Identity.Name;
+
+            //use the security UserManager controller we coded
+            //which ties into aspnet.Identity
+            //this will be used to get an ApplicationUser instance of the 
+            //current user
+            //include a using to the controller
+            UserManager sysmgr = new UserManager();
+
+            //needs using Mircosoft.Aspnet.Identity
+            var applicationuser = sysmgr.FindByName(username);
+
+            //get the customerid from the applicationuser
+            customerid = applicationuser.CustomerId == null ? 0 : (int)applicationuser.CustomerId;
+        }
+        else
+        {
+            MessageUserControl.ShowInfo("You must log in to manage a playlist.");
+        }
+        return customerid;
+    }
+    #endregion
+
+    #region Add a track to a playlist
     protected void TrackSearchList_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
         int customerid = GetUserCustomerId();
-        if (customerid > 0)
+
+        if (customerid > 0)  //is the user a customer
         {
             ListViewDataItem rowcontents = e.Item as ListViewDataItem;
-            // MessageUserControl.ShowInfo("row selected with id of " + e.CommandArgument + " title is " + (rowcontents.FindControl("NameLabel") as Label).Text.ToString());
             string playlistname = PlayListName.Text;
             if (string.IsNullOrEmpty(PlayListName.Text))
             {
@@ -198,13 +204,16 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
             {
                 MessageUserControl.TryRun(() =>
                 {
+                    //the trackid is attached to each ListView row via the CommandArgument parameter
 
+                    //this method does not make the value visible to the user (or in view source unless
+                    //   the hacker decompressed the hidden data)
 
-
+                    //access to the trackid is done via the ListViewCommandEventsArgs e and is treated
+                    //as an object, thus it needs to be cast to a string for the Parse to work
 
                     PlaylistTrackController sysmgr = new PlaylistTrackController();
                     sysmgr.AddTrackToPlayList(playlistname, int.Parse(e.CommandArgument.ToString()), customerid);
-
                     List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(playlistname, customerid);
                     CurrentPlayList.DataSource = results;
                     CurrentPlayList.DataBind();
@@ -216,7 +225,9 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
             MessageUserControl.ShowInfo("Please use your customer account to manage playlists.");
         }
     }
+    #endregion
 
+    #region Fetch a specified playlist for logged customer
     protected void PlayListFetch_Click(object sender, EventArgs e)
     {
         int customerid = GetUserCustomerId();
@@ -239,5 +250,5 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         }
     }
 
-
+    #endregion
 }

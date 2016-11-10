@@ -150,10 +150,10 @@
             <br />
        
             <asp:Label ID="Label5" runat="server" Text="PlayList"></asp:Label>&nbsp;&nbsp;
-             <asp:TextBox ID="PlayListName" runat="server"></asp:TextBox><br />
+             <asp:TextBox ID="PlayListName" runat="server"></asp:TextBox>&nbsp;&nbsp;
             <asp:Button ID="PlayListFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="PlayListFetch_Click" />&nbsp;&nbsp;
-           <asp:Button ID="PlayListSave" runat="server" Text="Save" CssClass="btn btn-primary" /><br />
-            <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False">
+           <br /><br />
+            <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False" Caption="PlayList">
                 <Columns>
                     <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
                     <asp:BoundField DataField="Title" HeaderText="Album"></asp:BoundField>
@@ -162,10 +162,12 @@
                     <asp:CheckBoxField DataField="Purchased" Text="Paid"></asp:CheckBoxField>
                     <asp:BoundField DataField="TrackId" Visible="False"></asp:BoundField>
                     <asp:BoundField DataField="TrackNumber"></asp:BoundField>
+
                 </Columns>
                 <EmptyDataTemplate>
                     No current tracks on play list.
                 </EmptyDataTemplate>
+                <SelectedRowStyle BackColor="Aqua" />
             </asp:GridView>
        </div>
     </div>
