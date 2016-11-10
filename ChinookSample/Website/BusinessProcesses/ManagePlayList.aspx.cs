@@ -65,13 +65,25 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         TrackController sysmgr = new TrackController();
         List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Artist");
         TrackSearchList.DataSource = results;
+        TrackSearchList.DataBind();
+        /*
+        this next logic test is to determine if the previous refresh for the
+        track list is from the same search method
+
+        if not then the DataPager is reset to page 1 of the displayed data and the
+        ListView data is DataBind() is run again (true).
+
+        this code must be placed after the first binding of the data for the DataPager
+        to exists.
+
+        */
         if (!TracksBy.Text.Equals("Artist"))
         {
             int maxrows=(TrackSearchList.FindControl("DataPager1") as DataPager).MaximumRows;
-            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0,maxrows, false);
+            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0,maxrows, true);
         }
         
-        TrackSearchList.DataBind();
+        //indicates which search method is currently being used.
         TracksBy.Text = "Artist";
     }
     protected void MediaTypeFetch_Click(object sender, EventArgs e)
@@ -84,12 +96,13 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         TrackController sysmgr = new TrackController();
         List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Media");
         TrackSearchList.DataSource = results;
+        TrackSearchList.DataBind();
         if (!TracksBy.Text.Equals("Media"))
         {
             int maxrows = (TrackSearchList.FindControl("DataPager1") as DataPager).MaximumRows;
-            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0, maxrows, false);
+            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0, maxrows, true);
         }
-        TrackSearchList.DataBind();
+       
         TracksBy.Text = "Media";
     }
 
@@ -103,12 +116,13 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         TrackController sysmgr = new TrackController();
         List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Genre");
         TrackSearchList.DataSource = results;
+        TrackSearchList.DataBind();
         if (!TracksBy.Text.Equals("Genre"))
         {
             int maxrows = (TrackSearchList.FindControl("DataPager1") as DataPager).MaximumRows;
-            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0, maxrows, false);
+            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0, maxrows, true);
         }
-        TrackSearchList.DataBind();
+       
         TracksBy.Text = "Genre";
     }
 
@@ -122,12 +136,13 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         TrackController sysmgr = new TrackController();
         List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Album");
         TrackSearchList.DataSource = results;
+        TrackSearchList.DataBind();
         if (!TracksBy.Text.Equals("Album"))
         {
             int maxrows = (TrackSearchList.FindControl("DataPager1") as DataPager).MaximumRows;
-            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0, maxrows, false);
+            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0, maxrows, true);
         }
-        TrackSearchList.DataBind();
+        
         TracksBy.Text = "Album";
     }
     protected void TrackSearchList_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
