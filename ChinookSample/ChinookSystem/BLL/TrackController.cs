@@ -135,6 +135,60 @@ namespace ChinookSystem.BLL
                                        }).ToList();
                             break;
                         }
+                    case "Media":
+                        {
+                            results = (from x in context.Tracks
+                                       where x.MediaType.MediaTypeId == id
+                                       select new TracksForPlaylistSelection
+                                       {
+                                           TrackId = x.TrackId,
+                                           Name = x.Name,
+                                           Title = x.Album.Title,
+                                           MediaName = x.MediaType.Name,
+                                           GenreName = x.Genre.Name,
+                                           Composer = x.Composer,
+                                           Milliseconds = x.Milliseconds,
+                                           Bytes = x.Bytes,
+                                           UnitPrice = x.UnitPrice
+                                       }).ToList();
+                            break;
+                        }
+                    case "Genre":
+                        {
+                            results = (from x in context.Tracks
+                                       where x.Genre.GenreId == id
+                                       select new TracksForPlaylistSelection
+                                       {
+                                           TrackId = x.TrackId,
+                                           Name = x.Name,
+                                           Title = x.Album.Title,
+                                           MediaName = x.MediaType.Name,
+                                           GenreName = x.Genre.Name,
+                                           Composer = x.Composer,
+                                           Milliseconds = x.Milliseconds,
+                                           Bytes = x.Bytes,
+                                           UnitPrice = x.UnitPrice
+                                       }).ToList();
+                            break;
+                        }
+                    default:
+                        {
+                            results = (from x in context.Tracks
+                                       where x.Album.AlbumId == id
+                                       select new TracksForPlaylistSelection
+                                       {
+                                           TrackId = x.TrackId,
+                                           Name = x.Name,
+                                           Title = x.Album.Title,
+                                           MediaName = x.MediaType.Name,
+                                           GenreName = x.Genre.Name,
+                                           Composer = x.Composer,
+                                           Milliseconds = x.Milliseconds,
+                                           Bytes = x.Bytes,
+                                           UnitPrice = x.UnitPrice
+                                       }).ToList();
+                            break;
+                        }
                 }
             }
             return results;

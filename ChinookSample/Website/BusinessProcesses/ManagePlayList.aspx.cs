@@ -52,8 +52,11 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         }
         return customerid;
     }
+
+    #region Search Fetch buttons
     protected void ArtistFetch_Click(object sender, EventArgs e)
     {
+       
         MessageUserControl.TryRun((ProcessRequest)FetchTracksForArtist);
     }
     public void FetchTracksForArtist()
@@ -62,22 +65,107 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         TrackController sysmgr = new TrackController();
         List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Artist");
         TrackSearchList.DataSource = results;
+        if (!TracksBy.Text.Equals("Artist"))
+        {
+            int maxrows=(TrackSearchList.FindControl("DataPager1") as DataPager).MaximumRows;
+            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0,maxrows, false);
+        }
+        
         TrackSearchList.DataBind();
         TracksBy.Text = "Artist";
     }
+    protected void MediaTypeFetch_Click(object sender, EventArgs e)
+    {
+        MessageUserControl.TryRun((ProcessRequest)FetchTracksForMedia);
+    }
+    public void FetchTracksForMedia()
+    {
+        int id = int.Parse(MediaTypeList.SelectedValue);
+        TrackController sysmgr = new TrackController();
+        List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Media");
+        TrackSearchList.DataSource = results;
+        if (!TracksBy.Text.Equals("Media"))
+        {
+            int maxrows = (TrackSearchList.FindControl("DataPager1") as DataPager).MaximumRows;
+            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0, maxrows, false);
+        }
+        TrackSearchList.DataBind();
+        TracksBy.Text = "Media";
+    }
 
+    protected void GenreFetch_Click(object sender, EventArgs e)
+    {
+        MessageUserControl.TryRun((ProcessRequest)FetchTracksForGenre);
+    }
+    public void FetchTracksForGenre()
+    {
+        int id = int.Parse(GenreList.SelectedValue);
+        TrackController sysmgr = new TrackController();
+        List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Genre");
+        TrackSearchList.DataSource = results;
+        if (!TracksBy.Text.Equals("Genre"))
+        {
+            int maxrows = (TrackSearchList.FindControl("DataPager1") as DataPager).MaximumRows;
+            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0, maxrows, false);
+        }
+        TrackSearchList.DataBind();
+        TracksBy.Text = "Genre";
+    }
+
+    protected void AlbumFetch_Click(object sender, EventArgs e)
+    {
+        MessageUserControl.TryRun((ProcessRequest)FetchTracksForAlbum);
+    }
+    public void FetchTracksForAlbum()
+    {
+        int id = int.Parse(AlbumList.SelectedValue);
+        TrackController sysmgr = new TrackController();
+        List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Album");
+        TrackSearchList.DataSource = results;
+        if (!TracksBy.Text.Equals("Album"))
+        {
+            int maxrows = (TrackSearchList.FindControl("DataPager1") as DataPager).MaximumRows;
+            (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(0, maxrows, false);
+        }
+        TrackSearchList.DataBind();
+        TracksBy.Text = "Album";
+    }
     protected void TrackSearchList_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
     {
-        switch (TracksBy.Text)
+        MessageUserControl.TryRun(() =>
         {
-            case "Artist":
-                {
-                    (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
-                    this.FetchTracksForArtist();
-                    break;
-                }
-        }
+            switch (TracksBy.Text)
+            {
+                case "Artist":
+                    {
+                        (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+                        this.FetchTracksForArtist();
+                        break;
+                    }
+                case "Media":
+                    {
+                        (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+                        this.FetchTracksForMedia();
+                        break;
+                    }
+                case "Genre":
+                    {
+                        (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+                        this.FetchTracksForGenre();
+                        break;
+                    }
+                case "Album":
+                    {
+                        (TrackSearchList.FindControl("DataPager1") as DataPager).SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+                        this.FetchTracksForAlbum();
+                        break;
+                    }
+            }
+
+        });
+        
     }
+    #endregion
 
     protected void TrackSearchList_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
@@ -136,45 +224,5 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         }
     }
 
-    protected void MediaTypeFetch_Click(object sender, EventArgs e)
-    {
-        MessageUserControl.TryRun((ProcessRequest)FetchTracksForMedia);
-    }
-    public void FetchTracksForMedia()
-    {
-        int id = int.Parse(MediaTypeList.SelectedValue);
-        TrackController sysmgr = new TrackController();
-        List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Artist");
-        TrackSearchList.DataSource = results;
-        TrackSearchList.DataBind();
-        TracksBy.Text = "Media";
-    }
 
-    protected void GenreFetch_Click(object sender, EventArgs e)
-    {
-        MessageUserControl.TryRun((ProcessRequest)FetchTracksForGenre);
-    }
-    public void FetchTracksForGenre()
-    {
-        int id = int.Parse(GenreList.SelectedValue);
-        TrackController sysmgr = new TrackController();
-        List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Artist");
-        TrackSearchList.DataSource = results;
-        TrackSearchList.DataBind();
-        TracksBy.Text = "Genre";
-    }
-
-    protected void AlbumFetch_Click(object sender, EventArgs e)
-    {
-        MessageUserControl.TryRun((ProcessRequest)FetchTracksForAlbum);
-    }
-    public void FetchTracksForAlbum()
-    {
-        int id = int.Parse(AlbumList.SelectedValue);
-        TrackController sysmgr = new TrackController();
-        List<TracksForPlaylistSelection> results = sysmgr.Get_TracksForPlaylistSelection(id, "Artist");
-        TrackSearchList.DataSource = results;
-        TrackSearchList.DataBind();
-        TracksBy.Text = "Album";
-    }
 }
