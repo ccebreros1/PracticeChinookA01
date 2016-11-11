@@ -5,11 +5,15 @@
 <%@ Register Src="~/UserControls/MessageUserControl.ascx" TagPrefix="uc1" TagName="MessageUserControl" %>
 
 
+
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <div class="jumbotron">
         <h3>Manage Playlist</h3>
     </div>
-    <uc1:MessageUserControl runat="server" ID="MessageUserControl" />
+    <uc1:MessageUserControl runat="server" id="MessageUserControl" />
+  
     <div class="row">
         <div class="col-sm-3">
             
@@ -156,6 +160,12 @@
             <asp:Button ID="PlayListFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="PlayListFetch_Click" />&nbsp;&nbsp;
             <asp:LinkButton ID="MoveUp" runat="server" CssClass="btn" OnClick="MoveUp_Click" >
                 <span aria-hidden="true" class="glyphicon glyphicon-chevron-up"></span>
+            </asp:LinkButton>&nbsp;&nbsp;
+            <asp:LinkButton ID="MoveDown" runat="server" CssClass="btn"  OnClick="MoveDown_Click">
+                <span aria-hidden="true" class="glyphicon glyphicon-chevron-down"></span>
+            </asp:LinkButton>&nbsp;&nbsp;
+             <asp:LinkButton ID="DeleteTrack" runat="server" CssClass="btn"  OnClick="DeleteTrack_Click">
+                <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
             </asp:LinkButton>
            <br /><br />
             <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False" Caption="PlayList">

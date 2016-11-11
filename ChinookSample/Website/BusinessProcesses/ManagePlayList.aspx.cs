@@ -23,8 +23,10 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         }
     }
 
+   
     protected override void Render(HtmlTextWriter writer)
-    {
+    { 
+        //this code sets up the ability to click anywhere on a row of a specified gridview :CurrentPlayList
         foreach (GridViewRow r in CurrentPlayList.Rows)
         {
             if (r.RowType == DataControlRowType.DataRow)
@@ -269,16 +271,61 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
 
     #endregion
 
+    #region Arrange or Remove Tracks
     protected void MoveUp_Click(object sender, EventArgs e)
     {
         if (CurrentPlayList.Rows.Count == 0)
         {
-            MessageUserControl.ShowInfo("You must have a playlist with entries before trying to rearrange the entries.");
+            MessageUserControl.ShowInfo("You must have a playlist with entries before trying to rearrange the tracks.");
         }
         else
         {
             int selectedrowindex = CurrentPlayList.SelectedIndex;
-            MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString());
+            if (selectedrowindex > -1)
+            {
+                if (selectedrowindex > 0)
+                {
+                    MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString() + " and can be moved");
+                }
+            }
+            
         }
     }
+
+    protected void MoveDown_Click(object sender, EventArgs e)
+    {
+        if (CurrentPlayList.Rows.Count == 0)
+        {
+            MessageUserControl.ShowInfo("You must have a playlist with entries before trying to rearrange the tracks.");
+        }
+        else
+        {
+            int selectedrowindex = CurrentPlayList.SelectedIndex;
+            if (selectedrowindex > -1)
+            {
+                if (CurrentPlayList.Rows.Count > selectedrowindex + 1)
+                {
+                    MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString() + " and can be moved");
+                }
+            }
+
+        }
+    }
+    protected void DeleteTrack_Click(object sender, EventArgs e)
+    {
+        if (CurrentPlayList.Rows.Count == 0)
+        {
+            MessageUserControl.ShowInfo("You must have a playlist with entries before trying to remove the track.");
+        }
+        else
+        {
+            int selectedrowindex = CurrentPlayList.SelectedIndex;
+            if (selectedrowindex > -1)
+            {
+                MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString() + " and can be removed");
+            }
+
+        }
+    }
+    #endregion
 }
