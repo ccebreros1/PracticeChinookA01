@@ -23,8 +23,8 @@
                 DataValueField="ArtistId"  
                 Width="300px">
             </asp:DropDownList><br />
-            <asp:Label ID="Label6" runat="server" Text="Artist"></asp:Label>&nbsp;&nbsp;
-            <asp:Button ID="ArtistFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="ArtistFetch_Click" /><br />
+            <asp:Label ID="Label6" runat="server" Text="Artist" Width="50px"></asp:Label>&nbsp;&nbsp;
+            <asp:Button ID="ArtistFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="ArtistFetch_Click" /><br /><br />
             
             <asp:DropDownList ID="MediaTypeList" runat="server"
                 Width="300px" 
@@ -32,8 +32,8 @@
                 DataTextField="DisplayText" 
                 DataValueField="PFKeyIdentifier">
             </asp:DropDownList><br />
-            <asp:Label ID="Label9" runat="server" Text="Media"></asp:Label>&nbsp;&nbsp;
-            <asp:Button ID="MediaTypeFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="MediaTypeFetch_Click"  /><br />
+            <asp:Label ID="Label9" runat="server" Text="Media" Width="50px"></asp:Label>&nbsp;&nbsp;
+            <asp:Button ID="MediaTypeFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="MediaTypeFetch_Click"  /><br /><br />
             
             <asp:DropDownList ID="GenreList" runat="server"
                 Width="300px" 
@@ -41,8 +41,8 @@
                 DataTextField="DisplayText" 
                 DataValueField="PFKeyIdentifier">
             </asp:DropDownList><br />
-            <asp:Label ID="Label7" runat="server" Text="Genre"></asp:Label>&nbsp;&nbsp;
-            <asp:Button ID="GenreFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="GenreFetch_Click" /><br />
+            <asp:Label ID="Label7" runat="server" Text="Genre" Width="50px"></asp:Label>&nbsp;&nbsp;
+            <asp:Button ID="GenreFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="GenreFetch_Click" /><br /><br />
            
              <asp:DropDownList ID="AlbumList" runat="server"
                 Width="300px" 
@@ -50,7 +50,7 @@
                 DataTextField="DisplayText" 
                 DataValueField="PFKeyIdentifier">
             </asp:DropDownList><br />
-            <asp:Label ID="Label8" runat="server" Text="Album"></asp:Label>&nbsp;&nbsp;
+            <asp:Label ID="Label8" runat="server" Text="Album" Width="50px"></asp:Label>&nbsp;&nbsp;
             <asp:Button ID="AlbumFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="AlbumFetch_Click" /><br />
         </div>
         <div class="col-sm-9">
