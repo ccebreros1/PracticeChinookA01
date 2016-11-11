@@ -320,9 +320,11 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         else
         {
             int selectedrowindex = CurrentPlayList.SelectedIndex;
+
             if (selectedrowindex > -1)
             {
-                MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString() + " and can be removed");
+                MessageUserControl.ShowInfo("track is >" + (CurrentPlayList.Rows[selectedrowindex].FindControl("TrackId") as Label).Text + "<");
+                
             }
 
         }

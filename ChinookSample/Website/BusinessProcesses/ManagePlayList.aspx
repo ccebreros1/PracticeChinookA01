@@ -168,16 +168,44 @@
                 <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
             </asp:LinkButton>
            <br /><br />
-            <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False" Caption="PlayList">
+            <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False" Caption="PlayList" GridLines="Horizontal" BorderStyle="None">
                 <Columns>
-                    <asp:BoundField DataField="Name" HeaderText="Name"></asp:BoundField>
-                    <asp:BoundField DataField="Title" HeaderText="Album"></asp:BoundField>
-                    <asp:BoundField DataField="Milliseconds" HeaderText="MSec"></asp:BoundField>
-                    <asp:BoundField DataField="UnitPrice" HeaderText="$"></asp:BoundField>
-                    <asp:CheckBoxField DataField="Purchased" Text="Paid"></asp:CheckBoxField>
-                    <asp:BoundField DataField="TrackId" Visible="False"></asp:BoundField>
-                    <asp:BoundField DataField="TrackNumber"></asp:BoundField>
-
+                    <asp:TemplateField HeaderText="Name">
+                        
+                        <ItemTemplate>
+                            <asp:Label runat="server" Text='<%# Bind("Name") %>' ID="Label1"></asp:Label>&nbsp;&nbsp;
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Album">
+                        <ItemTemplate>
+                            <asp:Label runat="server" Text='<%# Bind("Title") %>' ID="Label2"></asp:Label>&nbsp;&nbsp;
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="MSec">
+                        <ItemTemplate>
+                            <asp:Label runat="server" Text='<%# Bind("Milliseconds") %>' ID="Label3"></asp:Label>&nbsp;&nbsp;
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="$">
+                        <ItemTemplate>
+                            <asp:Label runat="server" Text='<%# Bind("UnitPrice") %>' ID="Label4"></asp:Label>&nbsp;&nbsp;
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Pd">
+                        <ItemTemplate>
+                            <asp:CheckBox runat="server" Checked='<%# Bind("Purchased") %>' Enabled="false" ID="CheckBox1"></asp:CheckBox>&nbsp;&nbsp;
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:Label runat="server" Text='<%# Bind("TrackNumber") %>' ID="Label5" ></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:Label ID="TrackId" runat="server" Text='<%# Eval("TrackId") %>' Visible="false"></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
                 <EmptyDataTemplate>
                     No current tracks on play list.
