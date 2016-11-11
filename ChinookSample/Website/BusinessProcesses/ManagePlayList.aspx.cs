@@ -22,7 +22,23 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
             TrackSearchList.DataSource = null;
         }
     }
-   
+
+    protected override void Render(HtmlTextWriter writer)
+    {
+        foreach (GridViewRow r in CurrentPlayList.Rows)
+        {
+            if (r.RowType == DataControlRowType.DataRow)
+            {
+                r.Attributes["onmouseover"] = "this.style.cursor='pointer';this.style.textDecoration='underline';";
+                r.Attributes["onmouseout"] = "this.style.textDecoration='none';";
+                r.ToolTip = "Click to select row";
+                r.Attributes["onclick"] = this.Page.ClientScript.GetPostBackClientHyperlink(this.CurrentPlayList, "Select$" + r.RowIndex, true);
+
+            }
+        }
+
+        base.Render(writer);
+    }
 
     #region Search Fetch buttons
     protected void ArtistFetch_Click(object sender, EventArgs e)
@@ -245,10 +261,24 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
                     List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(PlayListName.Text, customerid);
                     CurrentPlayList.DataSource = results;
                     CurrentPlayList.DataBind();
+                    CurrentPlayList.SelectedIndex = -1;
                 }
             });
         }
     }
 
     #endregion
+
+    protected void MoveUp_Click(object sender, EventArgs e)
+    {
+        if (CurrentPlayList.Rows.Count == 0)
+        {
+            MessageUserControl.ShowInfo("You must have a playlist with entries before trying to rearrange the entries.");
+        }
+        else
+        {
+            int selectedrowindex = CurrentPlayList.SelectedIndex;
+            MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString());
+        }
+    }
 }

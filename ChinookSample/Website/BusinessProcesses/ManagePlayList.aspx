@@ -1,4 +1,6 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="ManagePlayList.aspx.cs" Inherits="BusinessProcesses_ManagePlayList" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" 
+    AutoEventWireup="true" CodeFile="ManagePlayList.aspx.cs" 
+    Inherits="BusinessProcesses_ManagePlayList" %>
 
 <%@ Register Src="~/UserControls/MessageUserControl.ascx" TagPrefix="uc1" TagName="MessageUserControl" %>
 
@@ -152,6 +154,9 @@
             <asp:Label ID="Label5" runat="server" Text="PlayList"></asp:Label>&nbsp;&nbsp;
              <asp:TextBox ID="PlayListName" runat="server"></asp:TextBox>&nbsp;&nbsp;
             <asp:Button ID="PlayListFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="PlayListFetch_Click" />&nbsp;&nbsp;
+            <asp:LinkButton ID="MoveUp" runat="server" CssClass="btn" OnClick="MoveUp_Click" >
+                <span aria-hidden="true" class="glyphicon glyphicon-chevron-up"></span>
+            </asp:LinkButton>
            <br /><br />
             <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False" Caption="PlayList">
                 <Columns>
