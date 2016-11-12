@@ -198,7 +198,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField>
                         <ItemTemplate>
-                            <asp:Label runat="server" Text='<%# Bind("TrackNumber") %>' ID="Label5" ></asp:Label>
+                            <asp:Label runat="server" Text='<%# Bind("TrackNumber") %>' ID="TrackNumber" ></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField>

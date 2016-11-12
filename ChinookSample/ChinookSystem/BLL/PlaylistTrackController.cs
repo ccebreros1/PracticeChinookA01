@@ -115,5 +115,42 @@ namespace ChinookSystem.BLL
             //    scope.Complete();
             //}//eout
         }
+
+        public void MoveTrack(string playlistname, int trackid, int tracknumber, int customerid, string updown)
+        {
+            using (var context = new ChinookContext())
+            {
+                Playlist existing = (from x in context.PlayLists
+                                    where x.Name.Equals(playlistname)
+                                    && x.CustomerId == customerid
+                                    select x).FirstOrDefault();
+                PlaylistTrack movetrack = (from x in context.PlaylistTracks
+                                            where x.PlaylistId == existing.PlaylistId
+                                            && x.TrackId == trackid
+                                            select x).FirstOrDefault();
+                PlaylistTrack othertrack = null;
+                if (updown.Equals("up"))
+                {
+                     othertrack = (from x in context.PlaylistTracks
+                                                where x.PlaylistId == existing.PlaylistId
+                                                && x.TrackNumber == tracknumber - 1
+                                                select x).FirstOrDefault();
+                    movetrack.TrackNumber -= 1;
+                    othertrack.TrackNumber += 1;
+                }
+                else
+                {
+                    othertrack = (from x in context.PlaylistTracks
+                                  where x.PlaylistId == existing.PlaylistId
+                                  && x.TrackNumber == tracknumber + 1
+                                  select x).FirstOrDefault();
+                    movetrack.TrackNumber += 1;
+                    othertrack.TrackNumber -= 1;
+                }
+                context.Entry(movetrack).Property(y => y.TrackNumber).IsModified = true;
+                context.Entry(othertrack).Property(y => y.TrackNumber).IsModified = true;
+                context.SaveChanges();
+            }
+        }
     }
 }

@@ -285,7 +285,20 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
             {
                 if (selectedrowindex > 0)
                 {
-                    MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString() + " and can be moved");
+                    int customerid = GetUserCustomerId();
+                    int trackid = int.Parse((CurrentPlayList.Rows[selectedrowindex].FindControl("TrackId") as Label).Text);
+                    int tracknumber = int.Parse((CurrentPlayList.Rows[selectedrowindex].FindControl("TrackNumber") as Label).Text);
+                    //MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString() + " and can be moved");
+                    MessageUserControl.TryRun(() =>
+                    {
+                        PlaylistTrackController sysmgr = new PlaylistTrackController();
+                        sysmgr.MoveTrack(PlayListName.Text, trackid, tracknumber, customerid, "up");
+                        List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(PlayListName.Text, customerid);
+                        CurrentPlayList.DataSource = results;
+                       
+                        CurrentPlayList.SelectedIndex = selectedrowindex - 1;
+                        CurrentPlayList.DataBind();
+                    });
                 }
             }
             
