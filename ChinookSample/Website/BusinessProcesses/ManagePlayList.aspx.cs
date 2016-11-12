@@ -285,23 +285,10 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
             {
                 if (selectedrowindex > 0)
                 {
-                    int customerid = GetUserCustomerId();
-                    int trackid = int.Parse((CurrentPlayList.Rows[selectedrowindex].FindControl("TrackId") as Label).Text);
-                    int tracknumber = int.Parse((CurrentPlayList.Rows[selectedrowindex].FindControl("TrackNumber") as Label).Text);
                     //MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString() + " and can be moved");
-                    MessageUserControl.TryRun(() =>
-                    {
-                        PlaylistTrackController sysmgr = new PlaylistTrackController();
-                        sysmgr.MoveTrack(PlayListName.Text, trackid, tracknumber, customerid, "up");
-                        List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(PlayListName.Text, customerid);
-                        CurrentPlayList.DataSource = results;
-                       
-                        CurrentPlayList.SelectedIndex = selectedrowindex - 1;
-                        CurrentPlayList.DataBind();
-                    });
+                    MoveTrack(selectedrowindex, "up");
                 }
             }
-            
         }
     }
 
@@ -318,11 +305,34 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
             {
                 if (CurrentPlayList.Rows.Count > selectedrowindex + 1)
                 {
-                    MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString() + " and can be moved");
+                    //MessageUserControl.ShowInfo("selected index is " + selectedrowindex.ToString() + " and can be moved");
+                    MoveTrack(selectedrowindex, "down");
                 }
             }
-
         }
+    }
+
+    protected void MoveTrack(int selectedrowindex, string direction)
+    {
+        int customerid = GetUserCustomerId();
+        int trackid = int.Parse((CurrentPlayList.Rows[selectedrowindex].FindControl("TrackId") as Label).Text);
+        int tracknumber = int.Parse((CurrentPlayList.Rows[selectedrowindex].FindControl("TrackNumber") as Label).Text);
+        MessageUserControl.TryRun(() =>
+        {
+            PlaylistTrackController sysmgr = new PlaylistTrackController();
+            sysmgr.MoveTrack(PlayListName.Text, trackid, tracknumber, customerid, direction);
+            List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(PlayListName.Text, customerid);
+            CurrentPlayList.DataSource = results;
+            if (direction.Equals("up"))
+            {
+                CurrentPlayList.SelectedIndex = selectedrowindex - 1;
+            }
+            else
+            {
+                CurrentPlayList.SelectedIndex = selectedrowindex + 1;
+            }
+            CurrentPlayList.DataBind();
+        });
     }
     protected void DeleteTrack_Click(object sender, EventArgs e)
     {
@@ -336,8 +346,19 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
 
             if (selectedrowindex > -1)
             {
-                MessageUserControl.ShowInfo("track is >" + (CurrentPlayList.Rows[selectedrowindex].FindControl("TrackId") as Label).Text + "<");
-                
+                int customerid = GetUserCustomerId();
+                int trackid = int.Parse((CurrentPlayList.Rows[selectedrowindex].FindControl("TrackId") as Label).Text);
+                int tracknumber = int.Parse((CurrentPlayList.Rows[selectedrowindex].FindControl("TrackNumber") as Label).Text);
+                //MessageUserControl.ShowInfo("track is >" + (CurrentPlayList.Rows[selectedrowindex].FindControl("TrackId") as Label).Text + "<");
+                MessageUserControl.TryRun(() =>
+                {
+                    PlaylistTrackController sysmgr = new PlaylistTrackController();
+                    sysmgr.RemovePlaylistTrack(PlayListName.Text, trackid, tracknumber, customerid);
+                    List<TracksForPlaylist> results = sysmgr.Get_PlaylistTracks(PlayListName.Text, customerid);
+                    CurrentPlayList.DataSource = results;
+                    CurrentPlayList.SelectedIndex = -1;
+                    CurrentPlayList.DataBind();
+                });
             }
 
         }

@@ -165,7 +165,7 @@
                 <span aria-hidden="true" class="glyphicon glyphicon-chevron-down"></span>
             </asp:LinkButton>&nbsp;&nbsp;
              <asp:LinkButton ID="DeleteTrack" runat="server" CssClass="btn"  OnClick="DeleteTrack_Click">
-                <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                <span aria-hidden="true" class="glyphicon glyphicon-remove" style="color:red"></span>
             </asp:LinkButton>
            <br /><br />
             <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False" Caption="PlayList" GridLines="Horizontal" BorderStyle="None">

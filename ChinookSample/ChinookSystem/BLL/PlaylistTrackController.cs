@@ -152,5 +152,29 @@ namespace ChinookSystem.BLL
                 context.SaveChanges();
             }
         }
+
+        public void RemovePlaylistTrack(string playlistname, int trackid, int tracknumber, int customerid)
+        {
+            using (var context = new ChinookContext())
+            {
+                Playlist existing = (from x in context.PlayLists
+                                     where x.Name.Equals(playlistname)
+                                     && x.CustomerId == customerid
+                                     select x).FirstOrDefault();
+                var tracktoremove = context.PlaylistTracks.Find(existing.PlaylistId, trackid);
+                List<PlaylistTrack> trackskept = (from x in existing.PlaylistTracks
+                                                    where x.TrackNumber > tracknumber
+                                                    orderby x.TrackNumber
+                                                    select x).ToList();
+                context.PlaylistTracks.Remove(tracktoremove);
+                foreach (var track in trackskept)
+                {
+                    track.TrackNumber -= 1;
+                    context.Entry(track).Property("TrackNumber").IsModified = true;
+                }
+                context.SaveChanges();
+
+            }
+        }
     }
 }
