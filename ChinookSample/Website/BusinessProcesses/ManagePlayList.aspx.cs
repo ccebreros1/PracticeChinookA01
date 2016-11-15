@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity;
 
 public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
 {
+    #region Key Page Event Handlers and Overrides
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
@@ -51,6 +52,7 @@ public partial class BusinessProcesses_ManagePlayList : System.Web.UI.Page
         
         base.Render(writer);
     }
+    #endregion
 
     #region Search Fetch buttons
     protected void ArtistFetch_Click(object sender, EventArgs e)
