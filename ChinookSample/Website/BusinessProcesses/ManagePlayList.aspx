@@ -54,14 +54,15 @@
             <asp:Button ID="AlbumFetch" runat="server" Text="Fetch" CssClass="btn btn-primary" OnClick="AlbumFetch_Click" /><br />
         </div>
         <div class="col-sm-9">
-       
+            <%-- TracksBy and SearchArgID (can be hidden) are needed by the ListView ODS --%>
             <asp:Label ID="Label1" runat="server" Text="Tracks by "></asp:Label>
             <asp:Label ID="TracksBy" runat="server" ></asp:Label>
             <asp:Label ID="SearchArgID" runat="server" ></asp:Label>
-            <asp:ListView ID="TrackSearchList" runat="server" 
-               
-                OnItemCommand="TrackSearchList_ItemCommand" DataSourceID="TracksForSelectionODS">
 
+            <%-- ItemCommand use for the + event on each row
+                 I am hiding the TrackId for each row in ListView using CommandArgument --%>
+            <asp:ListView ID="TrackSearchList" runat="server" 
+                OnItemCommand="TrackSearchList_ItemCommand" DataSourceID="TracksForSelectionODS">
 
                 <EmptyDataTemplate>
                     <table runat="server" style="">
@@ -86,7 +87,6 @@
                                         <th runat="server">Milliseconds</th>
                                         <th runat="server">Bytes</th>
                                         <th runat="server">UnitPrice</th>
-
                                     </tr>
                                     <tr runat="server" id="itemPlaceholder"></tr>
                                 </table>
@@ -97,7 +97,6 @@
                                 <asp:DataPager runat="server" ID="DataPager2" PageSize="5" >
                                     <Fields>
                                         <asp:NumericPagerField ButtonType="Button" ButtonCount="4"  />
-                                       
                                     </Fields>
                                 </asp:DataPager>
                             </td>
@@ -109,7 +108,8 @@
                 <tr style="background-color: #DCDCDC; color: #000000;">
                     <td>
                         <asp:LinkButton ID="AddToPlayList" runat="server" CommandArgument='<%# Eval("TrackId") %>'
-                            CssClass="btn" ><span aria-hidden="true" class="glyphicon glyphicon-plus"></span></asp:LinkButton>
+                            CssClass="btn" ><span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                        </asp:LinkButton>
                    
                     </td>
                
@@ -175,10 +175,11 @@
                 <span aria-hidden="true" class="glyphicon glyphicon-remove" style="color:red"></span>
             </asp:LinkButton>
            <br /><br />
-            <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False" Caption="PlayList" GridLines="Horizontal" BorderStyle="None">
+
+            <asp:GridView ID="CurrentPlayList" runat="server" AutoGenerateColumns="False" 
+                Caption="PlayList" GridLines="Horizontal" BorderStyle="None">
                 <Columns>
                     <asp:TemplateField HeaderText="Name">
-                        
                         <ItemTemplate>
                             <asp:Label runat="server" Text='<%# Bind("Name") %>' ID="Label1"></asp:Label>&nbsp;&nbsp;
                         </ItemTemplate>
