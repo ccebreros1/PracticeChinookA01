@@ -57,48 +57,55 @@
        
             <asp:Label ID="Label1" runat="server" Text="Tracks by "></asp:Label>
             <asp:Label ID="TracksBy" runat="server" ></asp:Label>
-            <asp:ListView ID="TrackSearchList" runat="server"
-                 OnPagePropertiesChanging="TrackSearchList_PagePropertiesChanging" 
-                 OnItemCommand ="TrackSearchList_ItemCommand">
+            <asp:Label ID="SearchArgID" runat="server" ></asp:Label>
+            <asp:ListView ID="TrackSearchList" runat="server" 
+               
+                OnItemCommand="TrackSearchList_ItemCommand" DataSourceID="TracksForSelectionODS">
+
+
                 <EmptyDataTemplate>
-                    No data to display at this time
+                    <table runat="server" style="">
+                        <tr>
+                            <td>No data was returned.</td>
+                        </tr>
+                    </table>
                 </EmptyDataTemplate>
+    
                 <LayoutTemplate>
                     <table runat="server">
-                    <tr runat="server">
-                        <td runat="server">
-                            <table runat="server" id="itemPlaceholderContainer" style="background-color: #FFFFFF; border-collapse: collapse; 
-                                border-color: #999999; border-style: none; border-width: 1px; font-family: Verdana, Arial, Helvetica, sans-serif;" border="1">
-                                <tr runat="server" style="background-color: #DCDCDC; color: #000000;">
-                                    <th runat="server"></th>
-                                    <th runat="server">Name</th>
-                                    <th runat="server">Title</th>
-                                    <th runat="server">Media</th>
-                                    <th runat="server">Genre</th>
-                                    <th runat="server">Composer</th>
-                                    <th runat="server">MSec</th>
-                                    <th runat="server">Bytes</th>
-                                    <th runat="server">$</th>
+                        <tr runat="server">
+                            <td runat="server">
+                                <table runat="server" id="itemPlaceholderContainer" style="" border="0">
+                                    <tr runat="server" style="">
+                                        <th runat="server">TrackId</th>
+                                        <th runat="server">Name</th>
+                                        <th runat="server">Title</th>
+                                        <th runat="server">MediaName</th>
+                                        <th runat="server">GenreName</th>
+                                        <th runat="server">Composer</th>
+                                        <th runat="server">Milliseconds</th>
+                                        <th runat="server">Bytes</th>
+                                        <th runat="server">UnitPrice</th>
 
-                                </tr>
-                                <tr runat="server" id="itemPlaceholder"></tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr runat="server">
-                        <td runat="server" style="text-align: center; background-color: #CCCCCC; font-family: Verdana, Arial, Helvetica, sans-serif; color: #000000;">
-                            <asp:DataPager runat="server" ID="DataPager1" PageSize="5" PagedControlID="TrackSearchList" >
-                                <Fields>
-                                    <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
-                                    <asp:NumericPagerField></asp:NumericPagerField>
-                                    <asp:NextPreviousPagerField ButtonType="Button" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
-                                </Fields>
-                            </asp:DataPager>
-                        </td>
-                    </tr>
-                </table>
+                                    </tr>
+                                    <tr runat="server" id="itemPlaceholder"></tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr runat="server">
+                            <td runat="server" style="">
+                                <asp:DataPager runat="server" ID="DataPager2" PageSize="5" >
+                                    <Fields>
+                                        <asp:NumericPagerField ButtonType="Button" ButtonCount="4"  />
+                                       
+                                    </Fields>
+                                </asp:DataPager>
+                            </td>
+                        </tr>
+                    </table>
                 </LayoutTemplate>
-                 <ItemTemplate>
+              
+                <ItemTemplate>
                 <tr style="background-color: #DCDCDC; color: #000000;">
                     <td>
                         <asp:LinkButton ID="AddToPlayList" runat="server" CommandArgument='<%# Eval("TrackId") %>'
@@ -222,5 +229,15 @@
         SelectMethod="GenreList" TypeName="ChinookSystem.BLL.GenreController"></asp:ObjectDataSource>
     <asp:ObjectDataSource ID="AlbumListODS" runat="server" OldValuesParameterFormatString="original_{0}" 
         SelectMethod="AlbumList" TypeName="ChinookSystem.BLL.AlbumController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="TracksForSelectionODS" runat="server" 
+        DataObjectTypeName="ChinookSystem.Data.Entities.Track" 
+        OldValuesParameterFormatString="original_{0}" 
+        SelectMethod="Get_TracksForPlaylistSelection" 
+        TypeName="ChinookSystem.BLL.TrackController">
+        <SelectParameters>
+            <asp:ControlParameter ControlID="SearchArgID" PropertyName="Text" Name="id" Type="Int32"></asp:ControlParameter>
+            <asp:ControlParameter ControlID="TracksBy" PropertyName="Text" Name="fetchby" Type="String"></asp:ControlParameter>
+        </SelectParameters>
+    </asp:ObjectDataSource>
 </asp:Content>
 
