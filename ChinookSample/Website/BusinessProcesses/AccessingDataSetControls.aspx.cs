@@ -80,10 +80,11 @@ public partial class BusinessProcesses_AccessingDataSetControls : System.Web.UI.
         int albumsize = 0;
         decimal albumprice = 0m;
         string msg = null;
+        //This can be done to calculate totals and GST!!!!
         foreach (ListViewDataItem item in TrackListLV.Items)
         {
             trackcount += 1;
-            albumplaytime += int.Parse((item.FindControl("Milliseconds") as Label).Text);
+            albumplaytime += int.Parse((item.FindControl("Milliseconds") as Label).Text); 
             albumsize += int.Parse((item.FindControl("Bytes") as Label).Text);
             albumprice += decimal.Parse((item.FindControl("UnitPrice") as TextBox).Text);
         }
